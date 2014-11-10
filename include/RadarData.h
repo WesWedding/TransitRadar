@@ -12,6 +12,7 @@ public:
 	~RadarData(void);
 
 	void update(void);
+	void draw();
 
 protected:
 	std::map<int, TrimetPoint> pings;

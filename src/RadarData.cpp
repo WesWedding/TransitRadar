@@ -1,4 +1,5 @@
 #include "..\include\RadarData.h"
+#include "..\include\RadarPointDrawer.h"
 
 
 RadarData::RadarData(void)
@@ -16,9 +17,21 @@ void RadarData::update(void) {
 	if (nextUpdatePoint <= std::chrono::system_clock::now()) {
 		// TODO: Do something better than just purging the whole list each time.
 		pings.clear();
-		loadTrimetVehicles();
+		// For now, let's not bug the API until we circle back there.
+		//loadTrimetVehicles();
 		nextUpdatePoint += std::chrono::milliseconds(1000);
 	}
+	if (pings.size() < 1) {
+		TrimetPoint point(ci::Vec2d(0.0, 0.0), "Debug");
+		pings.insert(std::make_pair(1, point));
+	}
+}
+
+void RadarData::draw() {
+	for_each(pings.begin(), pings.end(), [this](std::pair<int, TrimetPoint> pair) {
+		RadarPointDrawer drawer;
+		drawer.drawPoint(pair.second);
+	});
 }
 
 	/** API Reference: 
@@ -61,10 +74,10 @@ void RadarData::loadTrimetVehicles() {
     json = cinder::JsonTree(loadUrl(endpoint));
 	try {
 		cinder::JsonTree vehicles = json.getChild("resultSet").getChild("vehicle");
-		for_each(vehicles.begin(), vehicles.end(), [this](cinder::JsonTree vehicleJson) {
+		for_each(vehicles.begin(), vehicles.end(), [this](ci::JsonTree vehicleJson) {
 			// Each vehicle becomes a radar point.
 			int id = vehicleJson.getValueForKey<int>("vehicleID");
-			cinder::Vec2d location(vehicleJson.getValueForKey<double>("longitude"), vehicleJson.getValueForKey<double>("latitude"));
+			ci::Vec2d location(vehicleJson.getValueForKey<double>("longitude"), vehicleJson.getValueForKey<double>("latitude"));
 			std::string label = vehicleJson.getValueForKey<std::string>("signMessage");
 			TrimetPoint point(location, label);
 			pings.insert(std::make_pair(id, point));

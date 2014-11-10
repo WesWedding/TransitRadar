@@ -20,6 +20,8 @@ void TransitRadarApp::setup()
 	// Grab the initial data
 	data.update();
 
+
+
 	// Set the viewport to render a view of a map with the following borders:
 	//    Upper left: 45.5314969,-122.6667829
 	//    Bottom right: 45.5219859,-122.6525972
@@ -39,7 +41,9 @@ void TransitRadarApp::draw()
 	// clear out the window with black
 	ci::gl::clear( ci::Color( 0, 0, 0 ) ); 
 
-		// Project those RadarPoints points onto our view!
+	data.draw();
+
+	// Project those RadarPoints points onto our view!
 }
 
 ci::Vec2d TransitRadarApp::projectPoint(const RadarPoint &point, double upLeftCorner, double botRightCorner) 
