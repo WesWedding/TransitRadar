@@ -8,7 +8,7 @@ public:
 	RadarPointDrawer(void);
 	~RadarPointDrawer(void);
 
-	void drawPoint(const RadarPoint point);
+	void drawPoint(const RadarPoint& point);
 private:
 };
 

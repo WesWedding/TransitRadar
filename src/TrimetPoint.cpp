@@ -1,10 +1,14 @@
 #include "..\include\TrimetPoint.h"
 
 
-TrimetPoint::TrimetPoint(cinder::Vec2d pos, std::string label) : RadarPoint(pos, label)
+TrimetPoint::TrimetPoint(ci::Vec2d pos, std::string label) : RadarPoint(pos, label)
 {
 }
 
-void TrimetPoint::updatePosition(cinder::Vec2d pos)
+ci::Vec2d TrimetPoint::getPosition() {
+	return position;
+}
+
+void TrimetPoint::updatePosition(ci::Vec2d pos)
 {
 };
